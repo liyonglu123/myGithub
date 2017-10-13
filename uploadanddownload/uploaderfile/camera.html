@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>html5调用本地的照相机</title>
+</head>
+<body>
+<!--<input id="takepicture" type="file" accept="image/*" capture="camera" style="display: none">-->
+<input id="takepicture" type="file" accept="image/*" capture="camera">
+<script>
+    // 图片的如何进行压缩呢？  base64 canavs 画图 的原理
+//    var takePictureOnclick = function(){
+//        var takePicture = document.getElementById('takepicture');
+//     // 添加需要处理的代码
+//        takePicture.click();
+//    }
+    // 监听照片拍摄,并获取照片流
+    var takePicture = document.getElementById('takepicture');
+    var takePictureUrl = function () {
+        takePicture.onchange = function (event) {
+            var files = event.target.files, file;
+            if (files && files.length > 0) {
+                file = files[0];
+                try {
+                    var URL = window.URL || window.webkitURL;
+                    var blob = URL.createObjectURL(file);　　// 获取照片的文件流
+//                    compressPicture(blob);　　// 压缩照片
+                }
+                catch (e) {
+                    try {
+                        var fileReader = new FileReader();
+                        fileReader.onload = function (event) {　　　　// 获取照片的base64编码
+//                            compressPicture(event.target.result);　　// 压缩照片
+                        };
+                        fileReader.readAsDataURL(file);
+                    }
+                    catch (e) {
+//                        alert(common.MESSAGE.title.error, '拍照失败,请联系客服或尝试更换手机再试!');
+                    }
+                }
+            }
+        }
+    }();
+</script>
+</body>
+</html>

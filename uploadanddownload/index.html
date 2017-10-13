@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件的上传和下载</title>
+</head>
+<body>
+<!--直接使用a标签进行下载 download="text.txt"属性用于下载文件 本地的文件如何不加则会直接展示对应的文件-->
+<a href="uploaderfile/text.txt" target="_blank" download="">下载</a>
+<a href="uploaderfile/9.25.docx" target="_blank" download="">下载</a>
+
+<!--简单的文件的上传 html5的文件的上传-->
+<input type="file" multiple>
+<img src="" alt="image" width="100" height="100">
+<textarea name="" id="" cols="30" rows="10"></textarea>
+</body>
+<script>
+    /** fileApi =====
+     * 不支持html属性可以使用 http://www.cnblogs.com/zichi/p/html5-file-api.html  参考
+     * 1. FileList 对象针对表单的 file 控件。当用户通过 file 控件选取文件后，
+     *    这个控件的 files 属性值就是 FileList 对象。它在结构上类似于数组，包含用户选取的多个文件。
+     *    如果 file 控件没有设置 multiple 属性，那么用户只能选择一个文件，FileList 对象也就只有一个元素了。
+     *    两种方式：   普通的上传， 拖放的方式
+     * 2. files 对象继承Blob File 对象是继承自 Blob 对象的，Blob（Binary Large Object）对象代表了一段二进制数据，
+     *    提供了一系列操作接口。其他操作二进制数据的 API（比如 File 对象），都是建立在 Blob 对象基础上的，
+     *    继承了它的属性和方法。
+     *    生成 Blob 对象有两种方法：一种是使用 Blob 构造函数，
+     *    另一种是对现有的 Blob 对象使用 slice 方法切出一部分。
+     *     Blob有两个只读属性：
+     *  size：二进制数据的大小，单位为字节。（文件上传时可以在前端判断文件大小是否合适）
+        type：二进制数据的 MIME 类型，全部为小写，如果类型未知，则该值为空字符串。
+        （文件上传时可以在前端判断文件类型是否合适）
+     * 3. FileReader
+     * FileReader API 用于读取文件，即把文件内容读入内存。它的参数是 File 对象或 Blob 对象。
+     * ====  读取文件的方法=====
+     * readAsBinaryString(Blob|File)：返回二进制字符串，该字符串每个字节包含一个 0 到 255 之间的整数。（已废弃）
+     * readAsText(Blob|File, opt_encoding)：返回文本字符串。默认情况下，文本编码格式是 UTF-8，可以通过可选的格式参数，指定其他编码格式的文本。
+     * readAsDataURL(Blob|File)：返回一个基于 Base64 编码的 data-uri 对象。
+     * readAsArrayBuffer(Blob|File)：返回一个 ArrayBuffer 对象。
+     *
+     * === 终止文件上传  abort（） ==
+     * var reader = new FileReader();
+       reader.abort();
+     *
+     * FileReader 对象采用异步方式读取文件，可以为一系列事件指定回调函数。
+     * onabort 方法：读取中断或调用 reader.abort() 方法时触发。
+       onerror 方法：读取出错时触发。
+       onload 方法：读取成功后触发。
+       onloadend 方法：读取完成后触发，不管是否成功。触发顺序排在 onload 或 onerror 后面。
+       onloadstart 方法：读取将要开始时触发。
+       onprogress 方法：读取过程中周期性触发。（可以用来获取文件读取的进度）
+     *4. URL
+     * 调用 URL 对象的 createObjectURL 方法，传入一个 File 对象或者 Blob 对象，能生成一个链接
+     *
+     * 5. Canvas & dataURL & Blob
+     * canvas 中有 toDataURL 函数，可以将 canvas 转为 dataURL 形式的 base64 编码，
+     * 而 Blob 也可以转为 dataURL，这三者之间是否可以互相转换？有没有什么实用之处？
+     */
+    document.querySelector("input").onchange = function () {
+        var files = this.files;
+        var reader = new FileReader();
+        reader.onload = function () {
+            var dataURL = reader.result;
+            document.querySelector('img').src = dataURL;
+        }
+         reader.readAsDataURL(this.files[0]);
+    }
+//    document.querySelector('input').onchange = function() {
+////        console.log(this.files);
+////         获取base64的编码
+//        var reader = new FileReader();
+//
+//        reader.onload = function() {
+//            var dataURL = reader.result;
+//            document.querySelector('textarea').innerHTML = dataURL;
+//        };
+//        reader.readAsDataURL(this.files[0]);
+//    };
+//      var textarea = document.querySelector('textarea');
+//      textarea.ondragover = function () { return false; };
+//    // Add drop handler
+//      textarea.ondrop = function(e) {
+//        e.stopPropagation();
+//        e.preventDefault();
+//        e = e || window.event;
+//        var files = e.dataTransfer.files;
+////        console.log(files);
+//          var reader = new FileReader();
+//
+//          reader.onload = function() {
+//              var dataURL = reader.result;
+//              document.querySelector('textarea').innerHTML = dataURL;
+//          };
+//
+//          reader.readAsDataURL(files[0]);
+//    };
+    /**
+     *  Blob对象的生成
+     */
+    // (1) Blob 构造函数，接受两个参数。
+    // 第一个参数是一个包含实际数据的数组，第二个参数是数据的类型，这两个参数都不是必需的
+//    var a = ["hello", "world"];
+//    var myBlob = new Blob(a, { "type" : "text/xml" });
+//    console.log(myBlob);
+    // （2）Blob 对象的 slice 方法，将二进制数据按照字节分块，返回一个新的 Blob 对象。
+//    var a = ["hello", "world"];
+//    var myBlob = new Blob(a, { "type" : "text/xml" });
+//    var newBlob = myBlob.slice(0, 5);
+//    console.log(newBlob);
+    /**4 url
+     * 调用 URL 对象的 createObjectURL 方法，传入一个 File 对象或者 Blob 对象，能生成一个链接
+     * var objecturl =  window.URL.createObjectURL(blob);
+     * 上面的代码会对二进制数据生成一个 URL，这个 URL 可以放置于任何通常可以放置 URL 的地方
+     * 比如 img 标签的 src 属性。
+     * 需要注意的是，即使是同样的二进制数据，每调用一次 URL.createObjectURL 方法，就会得到一个不一样的 URL
+     *
+     * 这个 URL 的存在时间，等同于网页的存在时间，一旦网页刷新或卸载，这个 URL 就失效。
+     * （File 和 Blob 又何尝不是这样呢）除此之外，也可以手动调用 URL.revokeObjectURL 方法，使 URL 失效。
+     * window.URL.revokeObjectURL(objectURL);
+     *
+     * 我们再回到 URL 上来。对于 File 或者 Blob 对象，
+     * 我们可以这样理解，它们的存在，依赖于页面，而 URL 能给这些 "转瞬即逝" 的二进制对象一个临时的指向地址。
+     * 这个临时的地址还有什么用呢？也能做图片预览，相比前面用 readAsDataURL 的实现，更简单了。
+     * 比如还有这样的需求，前端上传文件，要动态生成该文件的下载链接，也能用 URL 完成。
+     */;
+//    var blob = new Blob(["Hello liyonglu"]);
+//    var a = document.createElement("a");
+//    a.href = window.URL.createObjectURL(blob);
+//    a.download = "a.txt";
+//    a.textContent = "Download";
+//    document.body.appendChild(a);
+//    document.querySelector('input').onchange = function () {
+//        var files = this.files;
+//        document.querySelector('img').src = window.URL.createObjectURL(files[0]);
+//    }
+
+    /**
+     *（1）canvas -> dataURL
+
+     用 toDataURL 方法，比较简单，不多说。
+
+     （2）blob -> dataURL
+
+     用 FileReader 的 readAsDataURL 方法，使用方式可以看 这个 demo
+
+     （3）dataURL -> blob 这个方法不是很理解  charCodeAt 结合阮一峰的js基础教程进行查看 size type
+
+     （4）dataURL - canvas
+
+     将 image 的 src 属性置为 dataURL，再用 drawImage 方法画上去。
+
+     （5）blob - canvas
+
+     如何把二进制形式的图片画上 canvas？先用 readAsDataURL 转为 dataURL，接着就是 （4） 的事情了。
+
+     （6）canvas - blob
+
+     canvas 转为 blob 也可以用 dataURL 做跳板，先将 canvas 转为 dataURL（1），再用 dataURL 转为 blob（3）。
+     canvas 有原生的 toBlob 方法，使得图片文件可以被缓存或保存到本地。 参见链接
+     https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLCanvasElement/toBlob
+     */
+//    function dataURLtoBlob(dataurl) {
+//        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+//            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+//        while(n--){
+//            u8arr[n] = bstr.charCodeAt(n);
+//        }
+//        return new Blob([u8arr], {type:mime});
+//    }
+</script>
+</html>
