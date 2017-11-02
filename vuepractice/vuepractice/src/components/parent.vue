@@ -55,8 +55,8 @@ export default {
     },
     methods: {
         ...mapActions({
-            addCount: 'ADD_COUNNT',
-            decCount: 'DEC_COUNNT'
+            addCount: 'addCount',
+            decCount: 'decCount'
         }
           ),
         changeCount (){

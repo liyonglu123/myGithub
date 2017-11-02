@@ -1,13 +1,11 @@
 import * as types from './mutations-types'
 const mutations = {
      // 加1
-     [types.INCREMENT](state) {
-         debugger
-        state.count++;
+    [types.INCREMENT](state,step) {
+         !step ? (state.count++) : (state.count+=3)  
     },
     // 减1
     [types.DECREMENT](state) {
-        debugger
         state.count--
     }
 }
