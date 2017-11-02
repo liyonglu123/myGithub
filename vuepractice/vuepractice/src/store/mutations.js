@@ -8,6 +8,10 @@ const mutations = {
     // 减1
     [types.DECREMENT](state) {
         state.count--
+    },
+    //  异步
+    [types.SYCNLIST](state,res) {
+        state.nameList = res;
     }
 }
 

@@ -51,3 +51,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 > 任意两个组件之间的通信
 
 但是实际当项目逐渐变大，组件之间的层级变多，很多时候非父子间的组件通信也就开始多了，这时候我们就需要另外一种通信方式，官方的叫法global bus。
+
+
+vuex 中的循环的使用 
+axios 的局部和全局使用  

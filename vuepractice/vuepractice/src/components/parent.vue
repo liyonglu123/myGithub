@@ -40,6 +40,16 @@
          Correct usage:
 <Page :current="1" :total="100"></Page>
 
+<div class="list" style="height:100px;width:500px;background:red;">
+    <ul v-for="item in getList" :key="item.count">
+        <li>
+            <label for="">{{item.name}}</label>
+            <span>{{ item.count }}</span>
+
+        </li>
+    </ul>
+</div>
+
  </div>
 </template>
 
@@ -65,10 +75,15 @@ export default {
              cartCount: state => state.cart.count,
          }),
          ...mapGetters ([
-           'getCount',
+           'getCount',  
            'getName',
-           'getCounts'// 笔记本的数量
+           'getCounts',// 笔记本的数量
+           'getList' //异步获取的数据
         ]),
+    },
+    mounted () {
+        debugger
+        this.getsSycnList();
     },
     methods: {
         ...mapActions({
@@ -76,7 +91,8 @@ export default {
             decCount: 'decCount',
             // cart 的模块的actions 在全局的命名空间上 如何想更高的封装可以使用 命名空间进行封装
             changeName: 'changeName',
-            changeCounts: 'changeCounts'
+            changeCounts: 'changeCounts',
+            getsSycnList: 'sycnList' //异步获取的额数据
         }
           ),
         changeCount (){
