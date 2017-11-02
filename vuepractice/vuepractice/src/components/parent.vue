@@ -1,5 +1,10 @@
-<template>
+ <template>
     <div class="parent">
+        <button>{{count}}</button>
+        <button>{{getCount}}</button>
+        <button @click="addCount">加数字</button>
+         <button @click="decCount">减数字</button>
+         <p @click="changeCount">改变数字</p>
         <Row>
         <Col span="12">col-12</Col>
         <Col span="12">col-12</Col>
@@ -23,6 +28,7 @@
     
          Correct usage:
 <Page :current="1" :total="100"></Page>
+
  </div>
 </template>
 
@@ -30,6 +36,7 @@
 import Kid from "@/components/children"
 import One from "@/components/one"
 import Two from "@/components/two"
+import { mapState, mapGetters, mapActions } from "Vuex";  
 export default {
     name: "parent",
     data() {
@@ -38,7 +45,37 @@ export default {
             back: 0
         }
     },
+     computed: {
+         ...mapState({
+             count: state=> state.count
+         }),
+         ...mapGetters ([
+           'getCount'  
+        ]),
+    },
     methods: {
+        ...mapActions({
+            addCount: 'ADD_COUNNT',
+            decCount: 'DEC_COUNNT'
+        }
+          ),
+        changeCount (){
+            // 两种方式实现 commit 提交
+            this.addCount({step: 3});
+            // this.addCount(3)
+        },
+        // ...mapMutations ([
+        //     'INCREMENT',
+        //     'DECREMENT'
+        // ]),
+        // inc () {
+        //     debugger
+
+        // },
+        // dec () {
+
+        // },
+        
         tuihuan (back) {
             // debugger
             //  子组件传过来的值
