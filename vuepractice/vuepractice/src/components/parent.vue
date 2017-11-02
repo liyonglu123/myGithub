@@ -5,6 +5,17 @@
         <button @click="addCount">加数字</button>
          <button @click="decCount">减数字</button>
          <p @click="changeCount">改变数字</p>
+         <p>cart的数据模块</p>
+         <p>物品名称：{{cartName}}</p>
+         <p>物品数量：{{cartCount}}</p>
+         <p>getters得到的数据</p>
+         <p>物品名称：{{getName}}</p>
+         <p>物品数量：{{getCounts}}</p>
+         <p>actions的数据</p>
+         <p @click="changeName({newName: '笔记本2代'})">改变名字</p>
+         <p @click="changeCounts({newCount: 666})">改变数量</p>
+         <p @click="changeNamea">改变名字</p>
+         <p @click="changeCountsa">改变数量</p>
         <Row>
         <Col span="12">col-12</Col>
         <Col span="12">col-12</Col>
@@ -37,6 +48,8 @@ import Kid from "@/components/children"
 import One from "@/components/one"
 import Two from "@/components/two"
 import { mapState, mapGetters, mapActions } from "Vuex";  
+// import { createNamespacedHelpers } from 'vuex'// 创建命名空间辅助函数 可以使用再只有这个组件
+// 存在的情况下
 export default {
     name: "parent",
     data() {
@@ -47,22 +60,36 @@ export default {
     },
      computed: {
          ...mapState({
-             count: state=> state.count
+             count: state=> state.count,
+             cartName: state => state.cart.name,
+             cartCount: state => state.cart.count,
          }),
          ...mapGetters ([
-           'getCount'  
+           'getCount',
+           'getName',
+           'getCounts'// 笔记本的数量
         ]),
     },
     methods: {
         ...mapActions({
             addCount: 'addCount',
-            decCount: 'decCount'
+            decCount: 'decCount',
+            // cart 的模块的actions 在全局的命名空间上 如何想更高的封装可以使用 命名空间进行封装
+            changeName: 'changeName',
+            changeCounts: 'changeCounts'
         }
           ),
         changeCount (){
             // 两种方式实现 commit 提交
             this.addCount({step: 3});
             // this.addCount(3)
+        },
+        // cart 的模块的数据改变
+        changeNamea (){
+             this.changeName({newName: '步步高'});
+        },
+        changeCountsa (){
+ this.changeCounts({newCount: 999});
         },
         // ...mapMutations ([
         //     'INCREMENT',

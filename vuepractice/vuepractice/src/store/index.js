@@ -3,9 +3,12 @@ import Vuex from 'vuex'
 import state from './state'
 import mutations from './mutations'
 import * as actions from './actions'
-// import cart from './modules/cart'
+import cart from './modules/cart.js'
 // import product from './modules/product'
 import * as getters from './getters'
+//  查看日志的 方便进行调试
+import createLogger from 'vuex/dist/logger'
+const debug = process.env.NODE_ENV !== 'production'
 Vue.use(Vuex)
 //  下面是vuex的状态放进一个文件当中
 // const ADD_COUNNT = 'ADD_COUNNT';
@@ -42,13 +45,15 @@ Vue.use(Vuex)
 // }  
 const store = new Vuex.Store({
   state,
-  mutations,
+  mutations,  
   actions,
   getters,
-  // modules: {
-  //   cart,
-  //   product
-  // }
+  modules: {
+    cart
+    // product
+  },
+  strict: debug,
+  plugins: debug ? [createLogger()] : []
 })
 
 export default store
