@@ -49,8 +49,11 @@
         </li>
     </ul>
 </div> -->
-<div class="list" style="height:100px;width:500px;background:red;">
+<!-- <div class="list" style="height:100px;width:500px;background:red;">
     <p>地点为:{{getList.cnty}} : {{getList.city}}</p>
+</div> -->
+<div class="list" style="height:100px;width:500px;background:red;">
+    <p>地点为:{{weather.cnty}} ---- {{weather.city}}</p>
 </div>
  </div>
 </template>
@@ -60,6 +63,7 @@ import Kid from "@/components/children"
 import One from "@/components/one"
 import Two from "@/components/two"
 import { mapState, mapGetters, mapActions } from "Vuex";  
+import { getWheather } from '@/api/index'
 // import { createNamespacedHelpers } from 'vuex'// 创建命名空间辅助函数 可以使用再只有这个组件
 // 存在的情况下
 export default {
@@ -67,7 +71,8 @@ export default {
     data() {
         return {
             money: 100,
-            back: 0
+            back: 0,
+            weather:{}
         }
     },
      computed: {
@@ -83,18 +88,27 @@ export default {
            'getList' //异步获取的数据 
         ]),
     },
+    created (){
+        this._getWheather();
+    },
     mounted () {
         // debugger
-        this.getsSycnList();
+        // this.getsSycnList();
     },
     methods: {
+        _getWheather (){
+            getWheather().then((res)=>{
+                // debugger
+                this.weather = res.HeWeather5[0].basic;
+            })
+        },
         ...mapActions({
             addCount: 'addCount',
             decCount: 'decCount',
             // cart 的模块的actions 在全局的命名空间上 如何想更高的封装可以使用 命名空间进行封装
             changeName: 'changeName',
             changeCounts: 'changeCounts',
-            getsSycnList: 'sycnList' //异步获取的额数据
+            // getsSycnList: 'sycnList' //异步获取的额数据
         }
           ),
         changeCount (){

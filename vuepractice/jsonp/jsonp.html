@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>jsonp的跨域请求</title>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+    <div></div>
+    <!-- 特征 
+    {
+    "HeWeather5": [
+        {
+            "basic": {
+                "city": "北京",
+                "cnty": "中国",
+                "id": "CN101010100",
+                "lat": "39.90498734",
+                "lon": "116.40528870",
+                "update": {
+                    "loc": "2017-08-03 17:50",
+                    "utc": "2017-08-03 09:50"
+                }
+        }-->
+    <!-- <script>
+        // 名字相同的时候 原生js
+        var HeWeather5 = function (data){
+    console.log(data);
+};
+var js=document.createElement("script");
+js.src="https://free-api.heweather.com/v5/now?city=beijing&key=452970d722e14415bd7ac7eb391b0e11";
+js.type="text/javascript";
+document.getElementsByTagName("div")[0].appendChild(js);
+        </script> -->
+
+        <script>
+            // jq的实现
+            $(function () {
+    $.ajax(
+        {
+            url:'https://free-api.heweather.com/v5/now?city=beijing&key=452970d722e14415bd7ac7eb391b0e11',
+            type:'get',
+            datatype:'jsonp',
+            success:function (data) {
+                var jsdata=eval(data);
+                var msg=jsdata.HeWeather5[0];
+                $("div").html("<ul>"+"<li>"+"您查询的地点为"+msg.basic.city+"</li>"+"<li>"+"天气"+msg.now.cond.txt+"</li>"+"<li>"+"温度"+msg.now.fl+"</li>"+"<li>"+"风向"+msg.now.wind.dir+"</li>")
+            }
+        }
+    )
+})
+        </script>
+</body>
+</html>

@@ -3,7 +3,7 @@ import axios from 'axios'
 // const URL = "https://api.douban.com/v2/book/1220562"; 可能是没有对象的key
 // const URL = "https://www.baidu.com/"
 // 天气的接口
-const URL = "https://free-api.heweather.com/v5/now?city=beijing&key=452970d722e14415bd7ac7eb391b0e11"
+// const URL = "https://free-api.heweather.com/v5/now?city=beijing&key=452970d722e14415bd7ac7eb391b0e11"
 export const addCount = function({commit},{step}){
     // debugger
     commit(types.INCREMENT, step);
