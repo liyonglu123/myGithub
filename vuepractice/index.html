@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>面试题</title>
+</head>
+<body>
+    <script>
+        function Foo (){
+            getName = function (){
+                console.log(1);
+            }
+            return this;
+        }
+        Foo.getName = function(){
+            console.log(2);
+        }
+        Foo.prototype.getName = function(){
+            console.log(3);
+        }
+        var getName = function (){
+            console.log(4);
+        }
+        function getName (){
+            console.log(5);
+        }
+        Foo.getName();
+        getName();
+        Foo().getName();
+        getName();
+        new Foo.getName();
+
+        // 正则表达式的使用  如何进行计算呢?  如何去做呢? 
+        var pattern = new RegExp('^d+[^d]+')
+        // var pattern = //^d+[^d]+//,
+	      str1 = '123';
+          console.log(pattern.test(str1));
+          str2 = '123abc';
+          console.log(pattern.test(str2));
+          str3 = 'data123';
+          console.log(pattern.test(str3));
+          str4 = 'data';
+          console.log(pattern.test(str4));
+          str5 = '123data456';
+          console.log(pattern.test(str5));
+          str6 = 'abc123';
+          console.log(pattern.test(str6));
+
+    </script>
+</body>
+</html>

@@ -31,7 +31,21 @@ module.exports = {
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    // 可以在开发的时候实现跨域
+    // proxyTable: {},
+    proxyTable: {
+        // 要请求的服务器地址
+      'api': { 
+        target:'https://api.douban.com',
+        changeOrigin: true, 
+        pathRewrite: { 
+          // 将目标的服务器地址 替换为如下的地址
+         // 这里会将  https://api.douban.com' 替换为
+         // /api 所以发送后台请求的地址就变成 /api/xxx.php 之类的格式了
+        '^/api':''
+          } 
+        } 
+    },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

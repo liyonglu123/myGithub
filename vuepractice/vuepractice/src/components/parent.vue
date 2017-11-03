@@ -40,7 +40,7 @@
          Correct usage:
 <Page :current="1" :total="100"></Page>
 
-<div class="list" style="height:100px;width:500px;background:red;">
+<!-- <div class="list" style="height:100px;width:500px;background:red;">
     <ul v-for="item in getList" :key="item.count">
         <li>
             <label for="">{{item.name}}</label>
@@ -48,8 +48,10 @@
 
         </li>
     </ul>
+</div> -->
+<div class="list" style="height:100px;width:500px;background:red;">
+    <p>地点为:{{getList.cnty}} : {{getList.city}}</p>
 </div>
-
  </div>
 </template>
 
@@ -78,11 +80,11 @@ export default {
            'getCount',  
            'getName',
            'getCounts',// 笔记本的数量
-           'getList' //异步获取的数据
+           'getList' //异步获取的数据 
         ]),
     },
     mounted () {
-        debugger
+        // debugger
         this.getsSycnList();
     },
     methods: {

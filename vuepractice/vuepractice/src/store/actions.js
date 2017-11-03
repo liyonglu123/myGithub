@@ -1,7 +1,9 @@
 import * as types from './mutations-types'
 import axios from 'axios'
-// const URL = "https://api.douban.com/v2/book/1220562";
-const URL = "https://www.baidu.com/"
+// const URL = "https://api.douban.com/v2/book/1220562"; 可能是没有对象的key
+// const URL = "https://www.baidu.com/"
+// 天气的接口
+const URL = "https://free-api.heweather.com/v5/now?city=beijing&key=452970d722e14415bd7ac7eb391b0e11"
 export const addCount = function({commit},{step}){
     // debugger
     commit(types.INCREMENT, step);
@@ -13,8 +15,9 @@ export const addCount = function({commit},{step}){
 export const sycnList = function({commit}){
     // debugger
     axios.get(URL).then(data =>{
-        debugger
-        var res = data.data.tags;
+        // debugger
+        var res = data.data.HeWeather5[0].basic;
+        // console.log(res)
         commit(types.SYCNLIST, res); 
     })  
    
